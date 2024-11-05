@@ -1,6 +1,6 @@
 import { Database } from 'sqlite';
 
-export class BookDatabase {
+export default class BookDatabase {
   private db: Database;
 
   constructor(db: Database) {

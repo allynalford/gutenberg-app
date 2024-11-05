@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Database } from 'sqlite';
-import { BookDatabase } from '../classes/BookDataClass';
+import BookDatabase  from '../classes/BookDataClass';
 import BookFetcher from '../classes/BookFetcherClass';
 
 const router = express.Router();
@@ -43,7 +43,7 @@ router.get('/:book_id', async (req: Request, res: Response) => {
         await bookDatabaseInstance.insertBook(book.book_id, book.title, book.author, book.textContent);
 
         // Return the newly fetched and saved book data
-        res.status(201).json({
+        res.status(200).json({
             book_id,
             title: book.title,
             author: book.author,
