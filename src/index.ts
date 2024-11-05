@@ -2,11 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { initializeDatabase } from './database';
-import { fetchAndSaveBook } from './controllers/bookController';
-//import { BasicAuthAuthorizer } from './classes/BasicAuthAuthorizer';
 import { RootPathHandler } from './classes/util/RootPathHandler';
 import { EnvChecker } from './classes/util/EnvChecker';
 //Routes
+import bookRouter from './routes/book';
 import analyzeCharactersRouter from './routes/analyzeCharacters';
 import detectLanguageRouter from './routes/detectLanguage';
 import analyzeSentimentRouter from './routes/analyzeSentiment';
@@ -55,6 +54,9 @@ app.post('/', (req, res, next) => rootPathHandler.handleRequest(req, res, next))
 app.delete('/', (req, res, next) => rootPathHandler.handleRequest(req, res, next));
 app.patch('/', (req, res, next) => rootPathHandler.handleRequest(req, res, next));
 
+
+//Init the main route with database access to retrieve a book
+app.use('/book', bookRouter);
 //Setup Routes for LLM
 app.use('/analyze-characters', analyzeCharactersRouter);
 app.use('/detect-language', detectLanguageRouter);
@@ -67,15 +69,9 @@ app.use('/extract-themes', extractThemesRouter);
     //Init the database
     const db = await initializeDatabase();
 
-    //Cache the DB instance to be used by routes
+    //Set the DB instance to be used by routes
     app.set('db', db);  
     
-    //TODO: setup basic auth
-    //basicAuth({users: { 'Project': ' Gutenberg' }, challenge: true, unauthorizedResponse: new BasicAuthAuthorizer().getUnauthorizedResponse}),
-    
-    //Init the main route with database access to retrieve a book
-    app.get('/book/:book_id', (req, res) => fetchAndSaveBook(db, req, res));
-
     //Start the server
     app.listen(PORT, () => {
         try {

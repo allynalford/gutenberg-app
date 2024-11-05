@@ -15,11 +15,12 @@ router.get('/:book_id', async (req: Request, res: Response) => {
         //grab the book from the database
         const book = await bookDatabaseInstance.getBookById(book_id);
         //analyze the book
-        const characters = await analyzer.identifyKeyCharacters(book.text_content);
+        const characters = await analyzer.identifyKeyCharacters(book.text_content.slice(1, 15000));
         //respond
         res.status(200).json({ characters });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to analyze characters' });
+    } catch (error: any) {
+        console.error(error.message)
+        res.status(error.status).json({ error: 'Failed to analyze characters' });
     }
 });
 

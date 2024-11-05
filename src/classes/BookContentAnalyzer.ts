@@ -1,5 +1,6 @@
 import axios from 'axios';
-
+import dotenv from 'dotenv';
+dotenv.config();
 export default class BookContentAnalyzer {
   private apiKey: string;
   private apiUrl: string;
@@ -26,8 +27,8 @@ export default class BookContentAnalyzer {
         }
       );
       return response.data.choices[0].message.content;
-    } catch (error) {
-      console.error('Error calling Groq API:', error);
+    } catch (error: any) {
+      console.error('Error calling Groq API:', error.response.statusText);
       throw new Error('Failed to call Groq API');
     }
   }
