@@ -1,16 +1,15 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import { Database } from 'sqlite';
-
+import { BookDatabase } from '../classes/BookDataClass';
 export const fetchAndSaveBook = async (db: Database, req: Request, res: Response) => {
   const { book_id } = req.params;
 
   try {
-    // Check if book already exists in the database
-    const existingBook = await db.get(
-      `SELECT * FROM books WHERE book_id = ?`,
-      book_id
-    );
+      //Instantiate the book class
+      const bookDatabaseInstance = new BookDatabase(db);
+      // Check if book already exists in the database
+      const existingBook = await bookDatabaseInstance.getBookById(book_id);
 
     // If found, return the existing book data
     if (existingBook) {
@@ -47,10 +46,8 @@ export const fetchAndSaveBook = async (db: Database, req: Request, res: Response
     const author = metadata.match(/<meta name="author" content="(.*?)">/)?.[1] || 'Unknown Author';
 
     // Insert into SQLite database
-    await db.run(
-      `INSERT INTO books (book_id, title, author, text_content) VALUES (?, ?, ?, ?)`,
-      book_id, title, author, textContent
-    );
+    await bookDatabaseInstance.insertBook(book_id, title, author, textContent);
+
     //Log what happened
     console.info(`Book with ID: ${book_id} saved successfully`)
 
