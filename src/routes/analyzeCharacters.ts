@@ -1,17 +1,26 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import BookContentAnalyzer from '../classes/BookContentAnalyzer';
-
+import { Database } from 'sqlite';
+import { BookDatabase } from '../classes/BookDataClass';
 const router = express.Router();
 const analyzer = new BookContentAnalyzer();
 
-router.post('/', async (req, res) => {
-  const { text } = req.body;
-  try {
-    const characters = await analyzer.identifyKeyCharacters(text);
-    res.json({ characters });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to analyze characters' });
-  }
+router.get('/:book_id', async (req: Request, res: Response) => {
+    const { book_id } = req.params;
+    try {
+        // Instantiate the Database
+        const db: Database = req.app.get('db');
+        //Instantiate the book class
+        const bookDatabaseInstance = new BookDatabase(db);
+        //grab the book from the database
+        const book = await bookDatabaseInstance.getBookById(book_id);
+        //analyze the book
+        const characters = await analyzer.identifyKeyCharacters(book.text_content);
+        //respond
+        res.status(200).json({ characters });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to analyze characters' });
+    }
 });
 
 export default router;

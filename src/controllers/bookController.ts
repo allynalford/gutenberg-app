@@ -15,7 +15,9 @@ export const fetchAndSaveBook = async (db: Database, req: Request, res: Response
     // If found, return the existing book data
     if (existingBook) {
       //Log what happened
-      console.info(`Book with ID: ${book_id} retrieved from database`)
+      console.info(`Book with ID: ${book_id} retrieved from database`);
+
+      // Return the saved book data
       res.status(200).json({
         book_id: existingBook.book_id,
         title: existingBook.title,

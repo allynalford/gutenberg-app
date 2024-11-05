@@ -67,6 +67,8 @@ app.use('/extract-themes', extractThemesRouter);
     //Init the database
     const db = await initializeDatabase();
 
+    //Cache the DB instance to be used by routes
+    app.set('db', db);  
     
     //TODO: setup basic auth
     //basicAuth({users: { 'Project': ' Gutenberg' }, challenge: true, unauthorizedResponse: new BasicAuthAuthorizer().getUnauthorizedResponse}),
