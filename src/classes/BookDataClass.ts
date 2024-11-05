@@ -23,7 +23,7 @@ export class BookDatabase {
 
   // Method to insert a new book into the database
   public async insertBook(
-    bookId: string,
+    bookId: number,
     title: string,
     author: string,
     textContent: string

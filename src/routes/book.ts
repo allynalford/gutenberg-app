@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
 import { Database } from 'sqlite';
-import { BookDatabase } from '../classes/BookDataClass';
 import axios from 'axios';
+import { BookDatabase } from '../classes/BookDataClass';
+import BookFetcher from '../classes/BookFetcherClass';
+
 const router = express.Router();
 
 //TODO: setup basic auth
@@ -32,36 +34,21 @@ router.get('/:book_id', async (req: Request, res: Response) => {
             });
             return;
         }
+        //Init the book class, since we don't have the book
+        const bookFetcherInstance = new BookFetcher();
 
-        //Content URL
-        const contentUrl = `https://www.gutenberg.org/files/${book_id}/${book_id}-0.txt`;
-        //Metadata URL
-        const metadataUrl = `https://www.gutenberg.org/ebooks/${book_id}`;
+        //Grab the book
+        const book = await bookFetcherInstance.fetchBookData(Number(book_id));
 
-        // Fetch the book
-        const contentResponse = await axios.get(contentUrl);
-        //Grab the data
-        const textContent = contentResponse.data;
-
-        // Fetch book metadata (title and author parsing can be expanded)
-        const metadataResponse = await axios.get(metadataUrl);
-        //Grab the data
-        const metadata = metadataResponse.data;
-        //Get the title from the data
-        const title = metadata.match(/<title>(.*?)<\/title>/)?.[1] || 'Unknown Title';
-        //Grab the author
-        const author = metadata.match(/<meta name="author" content="(.*?)">/)?.[1] || 'Unknown Author';
-
-        // Insert into SQLite database
-        await bookDatabaseInstance.insertBook(book_id, title, author, textContent);
-
+        // Insert the book into SQLite database
+        await bookDatabaseInstance.insertBook(book.book_id, book.title, book.author, book.textContent);
 
         // Return the newly fetched and saved book data
         res.status(201).json({
             book_id,
-            title,
-            author,
-            textContent
+            title: book.title,
+            author: book.author,
+            textContent: book.textContent
         });
     } catch (error: any) {
         console.error(error.message);

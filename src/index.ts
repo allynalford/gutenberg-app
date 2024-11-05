@@ -35,8 +35,6 @@ app.use(express.json());
 // Set the default timeout (e.g., 30 seconds)
 app.use(timeout("30s"));
 
-//Basic Auth
-//const basicAuth = require('express-basic-auth');
 
 const PORT = process.env.PORT || 3000;
 
