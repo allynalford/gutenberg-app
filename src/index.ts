@@ -1,9 +1,8 @@
-// src/index.ts
 import express from 'express';
 import cors from 'cors';
 import { initializeDatabase } from './database';
 import { fetchAndSaveBook } from './controllers/bookController';
-import { BasicAuthAuthorizer } from './classes/BasicAuthAuthorizer';
+//import { BasicAuthAuthorizer } from './classes/BasicAuthAuthorizer';
 
 //Timeout
 const timeout = require("connect-timeout");
