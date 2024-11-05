@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export class BookContentAnalyzer {
+export default class BookContentAnalyzer {
   private apiKey: string;
   private apiUrl: string;
 
