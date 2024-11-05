@@ -12,8 +12,9 @@ export const fetchAndSaveBook = async (db: Database, req: Request, res: Response
       book_id
     );
 
+    // If found, return the existing book data
     if (existingBook) {
-      // If found, return the existing book data
+      //Log what happened
       console.info(`Book with ID: ${book_id} retrieved from database`)
       res.status(200).json({
         book_id: existingBook.book_id,
@@ -24,9 +25,9 @@ export const fetchAndSaveBook = async (db: Database, req: Request, res: Response
       return;
     }
 
-    //Content
+    //Content URL
     const contentUrl = `https://www.gutenberg.org/files/${book_id}/${book_id}-0.txt`;
-    //Metadata
+    //Metadata URL
     const metadataUrl = `https://www.gutenberg.org/ebooks/${book_id}`;
 
     // Fetch the book
@@ -48,7 +49,7 @@ export const fetchAndSaveBook = async (db: Database, req: Request, res: Response
       `INSERT INTO books (book_id, title, author, text_content) VALUES (?, ?, ?, ?)`,
       book_id, title, author, textContent
     );
-
+    //Log what happened
     console.info(`Book with ID: ${book_id} saved successfully`)
 
     // Return the newly fetched and saved book data
