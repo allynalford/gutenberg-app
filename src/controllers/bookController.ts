@@ -58,8 +58,8 @@ export const fetchAndSaveBook = async (db: Database, req: Request, res: Response
       author,
       textContent
     });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to fetch or save book data' });
+  } catch (error: any) {
+    console.error(error.message);
+    res.status(error.status).json({status: error.status,statusText: error.response.statusText, error: `Failed to fetch or save ${book_id} book data` });
   }
 };

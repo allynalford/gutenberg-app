@@ -3,7 +3,7 @@ import { open } from 'sqlite';
 
 export const initializeDatabase = async () => {
   const db = await open({
-    filename: './data/gutenberg.db',
+    filename: './gutenberg.db',
     driver: sqlite3.Database,
   });
 
