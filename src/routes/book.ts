@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import { Database } from 'sqlite';
-import axios from 'axios';
 import { BookDatabase } from '../classes/BookDataClass';
 import BookFetcher from '../classes/BookFetcherClass';
 
