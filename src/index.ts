@@ -77,6 +77,7 @@ app.use('/extract-themes', extractThemesRouter);
     //Start the server
     app.listen(PORT, () => {
         try {
+            //Check to make sure all required .env variables are set
             envChecker.checkEnvVariables()
             console.info(`Server is listening on port ${PORT}!`)
         } catch (error: any) {
