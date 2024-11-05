@@ -15,12 +15,17 @@ router.get('/:book_id', async (req: Request, res: Response) => {
     const bookDatabaseInstance = new BookDatabase(db);
     //grab the book from the database
     const book = await bookDatabaseInstance.getBookById(book_id);
+    //If we don't have the book yet
+    if(!book){
+      res.json({ error: `Failed to summarize plot. Book doesn't exists within database` });
+    }
     //analyze the book       
     const plotSummary = await analyzer.summarizePlot(book.text_content.slice(1, 15000));
+    //return the response
     res.json({ plotSummary });
   } catch (error: any) {
     console.error(error.message)
-    res.status(error.status).json({ error: 'Failed to summarize plot' });
+    res.status(error.status || 400).json({ error: 'Failed to summarize plot' });
   }
 });
 

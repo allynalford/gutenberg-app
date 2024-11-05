@@ -14,13 +14,17 @@ router.get('/:book_id', async (req: Request, res: Response) => {
         const bookDatabaseInstance = new BookDatabase(db);
         //grab the book from the database
         const book = await bookDatabaseInstance.getBookById(book_id);
+        //If we don't have the book yet
+        if (!book) {
+            res.json({ error: `Failed to analyze characters. Book doesn't exists within database` });
+        }            
         //analyze the book
         const characters = await analyzer.identifyKeyCharacters(book.text_content.slice(1, 15000));
         //respond
         res.status(200).json({ characters });
     } catch (error: any) {
         console.error(error.message)
-        res.status(error.status).json({ error: 'Failed to analyze characters' });
+        res.status(error.status || 400).json({ error: 'Failed to analyze characters' });
     }
 });
 

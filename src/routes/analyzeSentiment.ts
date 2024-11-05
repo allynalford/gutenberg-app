@@ -14,12 +14,16 @@ router.get('/:book_id', async (req: Request, res: Response) => {
     const bookDatabaseInstance = new BookDatabase(db);
     //grab the book from the database
     const book = await bookDatabaseInstance.getBookById(book_id);
+    //If we don't have the book yet
+    if (!book) {
+      res.json({ error: `Failed to analyze sentiment. Book doesn't exists within database` });
+    }      
     //analyze the book
     const sentiment = await analyzer.analyzeSentiment(book.text_content.slice(1, 15000));
     res.json({ sentiment });
   } catch (error: any) {
     console.error(error.message)
-    res.status(error.status).json({ error: 'Failed to analyze sentiment' });
+    res.status(error.status || 400).json({ error: 'Failed to analyze sentiment' });
   }
 });
 

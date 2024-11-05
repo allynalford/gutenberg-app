@@ -14,12 +14,16 @@ router.get('/:book_id', async (req: Request, res: Response) => {
     const bookDatabaseInstance = new BookDatabase(db);
     //grab the book from the database
     const book = await bookDatabaseInstance.getBookById(book_id);
+    //If we don't have the book yet
+    if (!book) {
+      res.json({ error: `Failed to detect language. Book doesn't exists within database` });
+    }    
     //analyze the book
     const language = await analyzer.detectLanguage(book.text_content.slice(1, 1500));
     res.json({ language });
   } catch (error: any) {
     console.error(error.message)
-    res.status(error.status).json({ error: 'Failed to detect language' });
+    res.status(error.status || 400).json({ error: 'Failed to detect language' });
   }
 });
 
