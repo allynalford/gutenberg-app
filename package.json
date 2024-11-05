@@ -9,7 +9,19 @@
     "build": "tsc",
     "dev": "nodemon src/index.ts",
     "docker:build": "docker build -t gutenberg-app .",
-    "docker:run": "docker run -p 3000:3000 gutenberg-app"
+    "docker:run": "docker run -p 3000:3000 gutenberg-app",
+    "gcp:login" : "gcloud auth login",
+    "gcp:docker" : "gcloud auth configure-docker",
+    "gcp:project" : "gcloud config set project project-gutenberg-440817",
+    "gcp:build": "docker build -t gcr.io/project-gutenberg-440817/gutenberg_app .",
+    "gcp:push": "docker push gcr.io/project-gutenberg-440817/gutenberg_app",
+    "gcp:deploy": "gcloud run deploy project-gutenberg --image gcr.io/project-gutenberg-440817/gutenberg_app --allow-unauthenticated",
+    "gcp:url" : "gcloud run services describe project-gutenberg --platform managed --region us-east4 --format 'value(status.url)'",
+    "dockerize:arm64": "docker build --platform linux/arm64 -t project-gutenberg.arm64 .",
+    "login:ecr": "aws ecr get-login-password --profile allyn-haven-tax --region us-east-1 | docker login --username AWS --password-stdin 443370695519.dkr.ecr.us-east-1.amazonaws.com",
+    "docker:tag:64": "docker tag project-gutenberg.arm64:latest 443370695519.dkr.ecr.us-east-1.amazonaws.com/apps/project-gutenberg",
+    "docker:push:64": "docker push 443370695519.dkr.ecr.us-east-1.amazonaws.com/apps/project-gutenberg"
+  
   },
   "keywords": [
     "Project",

@@ -11,6 +11,7 @@ import detectLanguageRouter from './routes/detectLanguage';
 import analyzeSentimentRouter from './routes/analyzeSentiment';
 import summarizePlotRouter from './routes/summarizePlot';
 import extractThemesRouter from './routes/extractThemes';
+import healthRouter from './routes/health';
 
 //.env
 dotenv.config();
@@ -61,6 +62,9 @@ app.use('/detect-language', detectLanguageRouter);
 app.use('/analyze-sentiment', analyzeSentimentRouter);
 app.use('/summarize-plot', summarizePlotRouter);
 app.use('/extract-themes', extractThemesRouter);
+
+//Health Check
+app.use('/health', healthRouter);
 
 //Init main route, start the server
 (async () => {

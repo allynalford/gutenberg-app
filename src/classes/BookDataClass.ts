@@ -21,6 +21,18 @@ export default class BookDatabase {
     }
   }
 
+  public async getBooks() {
+    try {
+      const existingBook = await this.db.get(
+        `SELECT * FROM books `
+      );
+      return existingBook;
+    } catch (error) {
+      console.error(`Failed to retrieve books`, error);
+      throw new Error('Database query error');
+    }
+  }
+
   // Method to insert a new book into the database
   public async insertBook(
     bookId: number,

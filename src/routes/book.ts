@@ -51,7 +51,7 @@ router.get('/:book_id', async (req: Request, res: Response) => {
         });
     } catch (error: any) {
         console.error(error.message);
-        res.status(error.status).json({ status: error.status, statusText: error.response.statusText, error: `Failed to fetch or save ${book_id} book data` });
+        res.status(error.status || 400).json({ error: `Failed to fetch or save ${book_id} book data` });
     }
 });
 
