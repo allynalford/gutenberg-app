@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(timeout("30s"));
 
 //Used for basic auth for api-docs
-const basicAuth = require('express-basic-auth');
+//const basicAuth = require('express-basic-auth');
 
 const PORT = process.env.PORT || 3000;
 
