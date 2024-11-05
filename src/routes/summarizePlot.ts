@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import BookContentAnalyzer from '../classes/BookContentAnalyzer';
 import { Database } from 'sqlite';
-import { BookDatabase } from '../classes/BookDataClass';
+import BookDatabase from '../classes/BookDataClass';
 
 const router = express.Router();
 const analyzer = new BookContentAnalyzer();
