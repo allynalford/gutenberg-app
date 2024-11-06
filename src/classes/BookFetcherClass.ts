@@ -14,8 +14,8 @@ class BookFetcher {
   async fetchBookData(bookId: number): Promise<{book_id: number, title: string; author: string; textContent: string }> {
     try {
       // URLs for content and metadata
-      const contentUrl = `https://www.gutenberg.org/files/${bookId}/${bookId}-0.txt`;
-      const metadataUrl = `https://www.gutenberg.org/ebooks/${bookId}`;
+      const contentUrl = `${process.env.GUTENBERG_CONTENT_URL}/${bookId}/${bookId}-0.txt`;
+      const metadataUrl = `${process.env.GUTENBERG_METADATA_URL}/${bookId}`;
 
       // Fetch the book content
       const contentResponse = await axios.get(contentUrl);
